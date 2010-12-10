@@ -7,8 +7,9 @@
 \usepackage{graphicx}
 \usepackage{multicol}
 
-\title{MAUL: Machine Agent User Learning\footnote{Some unscrambling necessary.}\\ CS229 Project Report }
-\author{Robert Holley and Daniel Rosenfeld}
+
+\title{MAUL: Machine Agent User Learning\footnote{Some unscrambling necessary.} }
+\author{Robert Holley and Daniel Rosenfeld \\ CS229 Project Report}
 \date{11/12/2010} 
 
 \makeatletter
@@ -76,7 +77,7 @@ The tokens were further coalesced to increase the robustness of the classifier. 
 % figure on decision tree
 Generally, given a new User-Agent string, our goal is to guess whether the string is from a bot, a browser or a mobile browser.  If the string is from a browser, we will also want to guess the browser type (family) and OS type.    Our goal is to build several classifiers using different techniques in order to find the most robust for classifying User-Agent strings.  For performing SVM training and prediction we use the LIBSVM-String library library (see implementation section below).\cite{libsvm}\cite{libsvm-string}  
 
-The kernels we chose to test are the linear, radial basis function (Gaussian), edit string (tokenized), and subsequence (tokenized, see implementation below).  The edit string kernel is defined as
+The kernels we chose to test are the linear, radial basis function (Gaussian), edit string (tokenized), and subsequence (tokenized).  For the linear and RBF kernels, the feature vectors were the number of instances of each token in a user agent string.  The edit string kernel is defined as
 \begin{equation}
 K(x,z) = \exp \left[ - \gamma \operatorname{LD}(x,z) \right]
 \end{equation}
