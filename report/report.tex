@@ -11,11 +11,20 @@
 \author{Robert Holley and Daniel Rosenfeld}
 \date{11/12/2010} 
 
+\makeatletter
+\newenvironment{tablehere}
+  {\def\@captype{table}}
+  {}
+
+\newenvironment{figurehere}
+  {\def\@captype{figure}}
+  {}
+\makeatother
 
 \begin{document}
 \maketitle
 \begin{abstract}
-We describe implementation of a classifier for User-Agent strings using Support Vector Machines.  The best Kernel is found to be the linear kernel, even when more complicated string based kernels, such as the edit distance kernel and the subsequence kernel, are employed.  A robust tokenization scheme is employed which dramatically speeds up the calculation for the edit string and subsequence kernels by shortening the effective string length. 
+We describe implementation of a classifier for User-Agent strings using Support Vector Machines.  The best kernel is found to be the linear kernel, even when more complicated string based kernels, such as the edit distance kernel and the subsequence kernel, are employed.  A robust tokenization scheme is employed which dramatically speeds up the calculation for the edit string and subsequence kernels by shortening the effective string length. 
 \end{abstract}
 \begin{multicols}{2}
 
@@ -55,11 +64,12 @@ The User-Agent strings were tokenized in order to build feature vectors and also
 
 The tokens were further coalesced to increase the robustness of the classifier.  Instead of having a unique token for every number, all numbers of the same length were represented by a single token.  Further coalescing was performed so that instances of `http' and `+http' were represented by a single token.      
 
-\begin{figure}
-\includegraphics[width=3.5in]{token_figure.png}
+\begin{center}
+\begin{figurehere}
+\includegraphics[width=3.25in]{token_figure.png}
 \caption{Example of the tokenization process.  Notice that the string is de-constructed at any instance of one of the following characters: {\bf \textbackslash /[].,;}  .}
-\end{figure}
-
+\end{figurehere}
+\end{center}
 
 \subsection{Learning}
 % few sentences on SVM, overfitting protection
@@ -122,7 +132,7 @@ The above table demonstrates that the linear classifier, despite its simplicity,
 
 The data was further inspected post-hoc to determine whether our SVM based classifier was superior to regular expression based parsers.  Some types of strings are expected to be difficult to classify for standard parsers, specifically: robots never seen before, robots disguised as browsers, and browsers that are partially disguised as robots.  We have found an instance of each of these cases, where when the below strings are excluded from the data they are still classified properly, yet several online tools fail at classification.  The examples we found were: 
 
-The robot with the User-Agent string, Mozilla/5.0 (compatible; Butterfly/1.0; \\+http://labs.topsy.com/butterfly/) Gecko/2009032608 Firefox/3.0.8, is a bot disguised as a browser, and was misclassified by uaProfiler, useragentstring.com, and user-agent-string.info. 
+The robot with the User-Agent string, Mozilla/5.0 (compatible; Butterfly/1.0; \\+http://labs.topsy.com/butterfly/) Gecko\\/2009032608 Firefox/3.0.8, is a bot disguised as a browser, and was misclassified by uaProfiler, useragentstring.com, and user-agent-string.info. 
 The robot with the User-Agent String,  ArabyBot (compatible; Mozilla/5.0; GoogleBot; FAST Crawler 6.4; http://www.araby.com;), is a bot that was not seen before, and went unclassified by uaProfiler, user-agent-string.info, useragentstring.com and Agentarius.  
 The browser with the User-Agent string, Googlebot/2.1 (+http://www.googlebot.com/bot.html; MSIE 7.0; Windows NT 5.1; GoogleT5; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET CLR 1.1.4322), is a browser disguised as a bot, and was misclassified by user-agent-string.info and BCP (the more browser centric parsers uaProfiler and useragentstring.com did get this one right).  
 
